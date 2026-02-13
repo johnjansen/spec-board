@@ -1,0 +1,40 @@
+<!-- Phase Column Template: Single column showing phase tasks -->
+<div class="phase-column {% if phase.is_current %}phase-current{% endif %} {% if phase.is_next %}phase-next{% endif %}">
+    <!-- Phase header -->
+    <div class="phase-header">
+        <div class="phase-title">
+            <h3>{{ phase.full_title }}</h3>
+            {% if phase.is_current %}
+            <span class="phase-badge badge-current">Current Phase</span>
+            {% endif %}
+            {% if phase.is_next %}
+            <span class="phase-badge badge-next">Next Up</span>
+            {% endif %}
+        </div>
+
+        <div class="phase-progress">
+            <div class="progress-text">
+                <span class="progress-count">{{ phase.completed_count }}/{{ phase.total_count }}</span>
+                <span class="progress-percentage">({{ "%.0f"|format(phase.completion_percentage) }}%)</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: {{ phase.completion_percentage }}%"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Task cards -->
+    <div class="phase-tasks">
+        {% if phase.tasks %}
+            {% for task in phase.tasks %}
+                {% include 'components/board_task_card.html' %}
+            {% endfor %}
+        {% else %}
+            <!-- Empty phase message -->
+            <div class="empty-phase">
+                <p>No tasks in this phase</p>
+            </div>
+        {% endif %}
+    </div>
+
+</div>

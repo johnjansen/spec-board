@@ -1,0 +1,919 @@
+/* Custom CSS overrides for Spec-Board Dashboard */
+
+/* T046: Plan.md specific styling for Constitution Check section */
+/* T048: Plan-specific elements (complexity tables, structure blocks) */
+
+/* Gate callouts - italicized text in paragraphs gets amber highlight */
+.prose p em {
+    background: linear-gradient(90deg, #fef3c7 0%, #fef9e7 100%);
+    border-left: 4px solid #f59e0b;
+    padding: 0.5rem 1rem;
+    margin: 0.5rem 0;
+    border-radius: 0.375rem;
+    color: #92400e;
+    font-weight: 600;
+    font-style: italic;
+    display: block;
+}
+
+/* Enhanced h3 styling for Constitution principles */
+.prose h3 {
+    color: #059669;
+    font-weight: 700;
+    padding: 0.5rem 0;
+    border-bottom: 2px solid #d1fae5;
+    margin-top: 1.5rem;
+}
+
+/* Strong emphasis in paragraphs (used for PASS/FAIL statuses) */
+.prose p strong {
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.25rem;
+    font-weight: 700;
+}
+
+/* Enhanced code blocks for project structure diagrams */
+.prose pre {
+    background: #1e293b !important;
+    border: 1px solid #334155;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    border-radius: 0.5rem;
+    margin: 1.5rem 0;
+}
+
+.prose pre code {
+    font-size: 0.875rem;
+    line-height: 1.7;
+    color: #e2e8f0;
+}
+
+/* Enhanced inline code */
+.prose code {
+    font-size: 0.875em;
+    line-height: 1.5;
+    font-weight: 600;
+}
+
+/* H2 section headers with subtle background */
+.prose h2 {
+    background: linear-gradient(90deg, #f0f9ff 0%, transparent 100%);
+    padding: 0.75rem 1rem;
+    margin-left: -1rem;
+    margin-right: -1rem;
+    border-left: 4px solid #0ea5e9;
+    border-radius: 0.25rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+/* T047: Enhanced syntax highlighting for code blocks */
+/* Syntax highlighting colors for common keywords */
+.prose .highlight .k,
+.prose .highlight .kn,
+.prose .highlight .kd { /* keywords */
+    color: #c792ea;
+    font-weight: 600;
+}
+
+.prose .highlight .s,
+.prose .highlight .s1,
+.prose .highlight .s2 { /* strings */
+    color: #c3e88d;
+}
+
+.prose .highlight .c,
+.prose .highlight .c1,
+.prose .highlight .cm { /* comments */
+    color: #697098;
+    font-style: italic;
+}
+
+.prose .highlight .n,
+.prose .highlight .nf,
+.prose .highlight .nc { /* names, functions, classes */
+    color: #82aaff;
+}
+
+.prose .highlight .mi,
+.prose .highlight .mf { /* numbers */
+    color: #f78c6c;
+}
+
+/* Blockquote styling for callouts */
+.prose blockquote {
+    background: #f8fafc;
+    border-left: 4px solid #3b82f6;
+    padding: 1rem 1.5rem;
+    margin: 1.5rem 0;
+    border-radius: 0.375rem;
+}
+
+/* Table styling for plan complexity matrices */
+.prose table {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.prose thead {
+    background: linear-gradient(180deg, #f1f5f9 0%, #e2e8f0 100%);
+}
+
+.prose tbody tr:nth-child(even) {
+    background: #f8fafc;
+}
+
+.prose tbody tr:hover {
+    background: #f1f5f9;
+    transition: background 0.15s ease;
+}
+
+/* List styling enhancements */
+.prose ul,
+.prose ol {
+    padding-left: 1.75rem;
+}
+
+.prose li {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.prose li::marker {
+    color: #64748b;
+    font-weight: 600;
+}
+
+/* Horizontal rule styling */
+.prose hr {
+    border-color: #e2e8f0;
+    margin: 2rem 0;
+    border-width: 2px;
+}
+
+/* T051: Tasks.md specific styling - checkbox visual indicators */
+/* Checkbox styling */
+.prose input[type="checkbox"] {
+    margin-right: 0.75rem;
+    width: 1.125rem;
+    height: 1.125rem;
+    cursor: default;
+    accent-color: #10b981;
+    flex-shrink: 0;
+}
+
+/* Task list items */
+.prose li {
+    display: flex;
+    align-items: flex-start;
+    padding: 0.375rem 0;
+}
+
+/* T056: Phase boundary markers with visual separators */
+/* General h2 styling already covers phase headers */
+
+/* T057: Dependency visualization - indent nested tasks */
+.prose ul ul {
+    margin-left: 1.5rem;
+    border-left: 2px solid #e5e7eb;
+    padding-left: 1rem;
+}
+
+/* T059, T063: Navigation buttons styling */
+button[hx-get] {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    border: 1px solid transparent;
+    transition: all 0.15s ease;
+}
+
+button[hx-get]:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+button[hx-get]:active {
+    transform: translateY(0);
+}
+
+/* Active artifact indicator */
+button[hx-get].bg-blue-600 {
+    border-color: #1e40af;
+    box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+}
+
+/* T065: HTMX loading indicators */
+.htmx-indicator {
+    display: none;
+}
+
+.htmx-request .htmx-indicator,
+.htmx-request.htmx-indicator {
+    display: block;
+}
+
+/* Loading spinner animation is already provided by Tailwind's animate-spin */
+
+/* T066: Transition animations for column updates */
+.htmx-swapping {
+    opacity: 1;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.htmx-settling {
+    opacity: 1;
+}
+
+/* Fade in animation for newly loaded content */
+.htmx-added {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Smooth transitions for all interactive elements */
+.feature-item,
+.artifact-item,
+button {
+    transition: all 0.15s ease-in-out;
+}
+
+/* T071: Responsive design for mobile screens */
+@media (max-width: 768px) {
+    /* Stack columns vertically on mobile */
+    .flex.h-screen {
+        flex-direction: column;
+        height: auto;
+        min-height: 100vh;
+    }
+
+    /* Make columns full width on mobile */
+    .w-1\/4,
+    .flex-1 {
+        width: 100% !important;
+        min-width: 100% !important;
+        max-height: 400px;
+        border-right: none;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    /* Adjust navigation buttons for mobile */
+    .flex.items-center.gap-2 button {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.75rem;
+    }
+
+    /* Reduce padding on mobile */
+    .p-4 {
+        padding: 0.75rem;
+    }
+
+    .p-6 {
+        padding: 1rem;
+    }
+
+    /* Make prose content more readable on mobile */
+    .prose {
+        font-size: 0.9375rem;
+    }
+
+    .prose h1 {
+        font-size: 1.5rem;
+    }
+
+    .prose h2 {
+        font-size: 1.25rem;
+    }
+
+    .prose h3 {
+        font-size: 1.125rem;
+    }
+}
+
+/* Tablet adjustments */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .w-1\/4 {
+        width: 30% !important;
+        min-width: 220px !important;
+    }
+}
+
+/* Task completion counter with progress bar */
+.task-completion-summary {
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+    border: 2px solid #3b82f6;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin: 1.5rem 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.completion-bar-container {
+    width: 100%;
+    height: 1.5rem;
+    background: #e0e7ff;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    margin-bottom: 0.75rem;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.completion-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+    transition: width 0.3s ease;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.completion-text {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #1e40af;
+    font-size: 0.9375rem;
+}
+
+.completion-percentage {
+    color: #6b7280;
+    font-weight: 600;
+}
+
+/* T052: Task ID styling (generated by post-processor) */
+.task-id {
+    background: #dbeafe;
+    color: #1e40af;
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.25rem;
+    font-weight: 700;
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+    font-size: 0.8125rem;
+    border: 1px solid #93c5fd;
+}
+
+/* T053: Story label badges (generated by post-processor) */
+.story-label {
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.25rem;
+    font-weight: 600;
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+    font-size: 0.8125rem;
+    margin: 0 0.25rem;
+}
+
+.story-1 {
+    background: #dbeafe;
+    color: #1e40af;
+    border: 1px solid #93c5fd;
+}
+
+.story-2 {
+    background: #e0e7ff;
+    color: #4338ca;
+    border: 1px solid #a5b4fc;
+}
+
+.story-3 {
+    background: #ede9fe;
+    color: #6d28d9;
+    border: 1px solid #c4b5fd;
+}
+
+.story-4 {
+    background: #f3e8ff;
+    color: #7c3aed;
+    border: 1px solid #d8b4fe;
+}
+
+.story-5 {
+    background: #fae8ff;
+    color: #a21caf;
+    border: 1px solid #f0abfc;
+}
+
+/* T054: Parallel marker styling (generated by post-processor) */
+.parallel-marker {
+    background: #fef3c7;
+    color: #d97706;
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.25rem;
+    font-weight: 700;
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+    font-size: 0.8125rem;
+    border: 1px solid #fbbf24;
+    margin: 0 0.25rem;
+}
+
+/* ========================================================================
+   T014-T016: Board View Styles (Kanban Board Visualization)
+   T027: View switching animations (US2)
+   ======================================================================== */
+
+/* T027: HTMX view transition animations */
+#column-content {
+    transition: opacity 0.2s ease-in-out;
+}
+
+.htmx-swapping #column-content {
+    opacity: 0;
+}
+
+/* Board header styles */
+.board-header {
+    background: white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    width: 100vw;
+    flex-shrink: 0; /* Don't shrink when space is limited */
+    position: sticky;
+    top: 0;
+}
+
+/* Make content column full-width when board is present */
+#column-content:has(.board-wrapper) {
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 50 !important;
+    overflow: hidden !important;
+    background: white;
+}
+
+/* Board wrapper styling */
+.board-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+/* Hide other columns when board is active */
+.flex.h-screen.overflow-hidden:has(#column-content .board-wrapper) > div:not(#column-content) {
+    display: none;
+}
+
+/* T014: CSS Grid layout for full-screen horizontal scrolling board */
+.board-container {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(320px, 1fr);
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background: #f9fafb;
+    border-radius: 0;
+    margin: 0;
+    width: 100vw;
+    flex: 1; /* Take remaining space between header and footer */
+    overflow-x: auto; /* Horizontal scroll within this container */
+    overflow-y: hidden; /* No vertical scroll on board itself */
+    min-height: 0; /* Allow flex item to shrink below content size */
+}
+
+/* Scrollbar for board container */
+.board-container::-webkit-scrollbar {
+    height: 10px;
+}
+
+.board-container::-webkit-scrollbar-track {
+    background: #e5e7eb;
+}
+
+.board-container::-webkit-scrollbar-thumb {
+    background: #9ca3af;
+    border-radius: 5px;
+}
+
+.board-container::-webkit-scrollbar-thumb:hover {
+    background: #6b7280;
+}
+
+/* Remove column-content overflow when board is displayed */
+.board-view-active #column-content {
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+/* Smooth scrolling for the entire viewport when board is active */
+html:has(.board-container) {
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
+body::-webkit-scrollbar {
+    height: 10px;
+}
+
+body::-webkit-scrollbar-track {
+    background: #e5e7eb;
+}
+
+body::-webkit-scrollbar-thumb {
+    background: #9ca3af;
+    border-radius: 5px;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+    background: #6b7280;
+}
+
+/* T016: Phase column styles */
+.phase-column {
+    background: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    min-width: 320px;
+    max-width: 380px;
+    height: calc(100vh - 180px); /* Fixed height accounting for header/footer */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.phase-column:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Current phase highlighting (T034 - US3) */
+.phase-column.phase-current {
+    border: 2px solid #3b82f6;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.phase-column.phase-current:hover {
+    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+}
+
+/* Next phase subtle highlighting (T035 - US3) */
+.phase-column.phase-next {
+    border: 2px solid #f59e0b;
+    background: linear-gradient(to bottom, #fffbeb 0%, white 10%);
+}
+
+/* Phase header */
+.phase-header {
+    padding: 1.25rem;
+    border-bottom: 2px solid #e5e7eb;
+    background: linear-gradient(to bottom, #f9fafb 0%, white 100%);
+    border-radius: 0.75rem 0.75rem 0 0;
+    flex-shrink: 0; /* Don't shrink when space is limited */
+}
+
+.phase-title {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.phase-title h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* Phase badges (T032, T033 - US3) */
+.phase-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+.badge-current {
+    background: #dbeafe;
+    color: #1e40af;
+    border: 1px solid #3b82f6;
+}
+
+.badge-next {
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #f59e0b;
+}
+
+/* Progress bar */
+.phase-progress {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.progress-text {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.875rem;
+}
+
+.progress-count {
+    font-weight: 700;
+    color: #374151;
+}
+
+.progress-percentage {
+    color: #6b7280;
+    font-weight: 500;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 9999px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
+    transition: width 0.3s ease;
+    border-radius: 9999px;
+}
+
+/* Phase tasks container */
+.phase-tasks {
+    flex: 1 1 auto;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    overflow-y: auto !important;
+    overflow-x: hidden;
+    min-height: 0; /* Allow flex item to shrink */
+}
+
+.phase-tasks::-webkit-scrollbar {
+    width: 8px;
+}
+
+.phase-tasks::-webkit-scrollbar-track {
+    background: #f3f4f6;
+    border-radius: 4px;
+}
+
+.phase-tasks::-webkit-scrollbar-thumb {
+    background: #9ca3af;
+    border-radius: 4px;
+}
+
+.phase-tasks::-webkit-scrollbar-thumb:hover {
+    background: #6b7280;
+}
+
+/* Empty phase message (T019 - US1) */
+.empty-phase {
+    padding: 2rem 1rem;
+    text-align: center;
+    color: #9ca3af;
+    font-style: italic;
+}
+
+/* Phase footer */
+.phase-footer {
+    padding: 0.75rem 1.25rem;
+    border-top: 1px solid #e5e7eb;
+    background: #f9fafb;
+    border-radius: 0 0 0.75rem 0.75rem;
+    text-align: center;
+}
+
+.phase-status {
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.375rem;
+    display: inline-block;
+}
+
+.status-complete {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.status-in-progress {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.status-not-started {
+    background: #f3f4f6;
+    color: #6b7280;
+}
+
+/* T015: Task card styles */
+.task-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    padding: 0.875rem;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.task-card:hover {
+    border-color: #3b82f6;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
+    transform: translateX(2px);
+}
+
+.task-card.task-complete {
+    background: #f9fafb;
+    opacity: 0.85;
+}
+
+.task-card.task-complete:hover {
+    opacity: 1;
+}
+
+/* Task card header */
+.task-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.task-id {
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: #3b82f6;
+    background: #eff6ff;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    border: 1px solid #dbeafe;
+}
+
+.task-status .checkbox {
+    font-size: 1.125rem;
+    font-weight: 700;
+}
+
+.checkbox.checked {
+    color: #10b981;
+}
+
+.checkbox.unchecked {
+    color: #d1d5db;
+}
+
+/* Task card body */
+.task-card-body {
+    margin-bottom: 0.75rem;
+}
+
+.task-description {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: #374151;
+    margin: 0;
+    /* Truncate after 3 lines (T039 - US1) */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.task-card.task-complete .task-description {
+    color: #6b7280;
+}
+
+/* Task card footer with labels */
+.task-card-footer {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.task-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    border: 1px solid;
+}
+
+.story-label {
+    background: #ede9fe;
+    color: #6d28d9;
+    border-color: #c4b5fd;
+}
+
+.parallel-label {
+    background: #fef3c7;
+    color: #d97706;
+    border-color: #fbbf24;
+}
+
+/* Board statistics footer */
+.board-footer {
+    background: white;
+    border-top: 1px solid #e5e7eb;
+    padding: 1rem 1.5rem;
+    z-index: 100;
+    width: 100vw;
+    flex-shrink: 0; /* Don't shrink when space is limited */
+    position: sticky;
+    bottom: 0;
+}
+
+.board-stats {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.board-stats .stat {
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+.board-stats .stat strong {
+    color: #111827;
+    font-weight: 600;
+}
+
+/* Empty state and completion message */
+.empty-state,
+.completion-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    text-align: center;
+    grid-column: 1 / -1;
+}
+
+.empty-icon,
+.completion-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.empty-text h3,
+.completion-text h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 0 0 0.5rem 0;
+}
+
+.empty-text p,
+.completion-text p {
+    font-size: 1rem;
+    color: #6b7280;
+    margin: 0;
+}
+
+/* Responsive design for board view (T037 - US1) */
+@media (max-width: 1024px) {
+    .board-container {
+        grid-auto-columns: minmax(280px, 1fr);
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    .phase-column {
+        min-width: 280px;
+        max-width: 320px;
+    }
+}
+
+@media (max-width: 768px) {
+    .board-container {
+        grid-auto-flow: row;
+        grid-auto-columns: unset;
+        overflow-x: visible;
+        overflow-y: auto;
+    }
+
+    .phase-column {
+        max-width: 100%;
+    }
+
+    .board-stats {
+        flex-direction: column;
+        gap: 0.75rem;
+        align-items: flex-start;
+    }
+}

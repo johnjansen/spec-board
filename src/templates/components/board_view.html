@@ -1,0 +1,76 @@
+<!-- Board View Template: Main container for Kanban board visualization -->
+<div class="board-wrapper">
+
+<!-- Auto-refresh: Reload board every 30 seconds -->
+<div hx-get="/artifacts/{{ feature_id }}/tasks/board"
+     hx-trigger="every 30s"
+     hx-target="#column-content"
+     hx-swap="innerHTML"
+     style="display: none;"></div>
+
+<!-- Board header with view toggle (T025 - US2) -->
+<div class="board-header">
+    <div class="flex items-center justify-between p-4 bg-white border-b border-gray-200">
+        <div class="flex items-center gap-3">
+            <h2 class="text-lg font-bold text-gray-900">Board View: {{ feature.full_name }}</h2>
+            <span class="text-sm text-gray-500">{{ board.total_tasks }} tasks</span>
+            <!-- T038: Loading indicator -->
+            <span class="htmx-indicator text-sm text-gray-400">
+                <svg class="animate-spin h-4 w-4 inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Loading...
+            </span>
+        </div>
+
+        <!-- List View toggle button (T025, T026 - US2) -->
+        <a href="/artifacts/{{ feature_id }}/tasks"
+            class="px-4 py-2 text-sm font-medium rounded-md transition-colors duration-150 bg-blue-600 text-white hover:bg-blue-700 inline-block"
+            hx-get="/artifacts/{{ feature_id }}/tasks"
+            hx-target="#column-content"
+            hx-swap="innerHTML"
+            hx-push-url="false"
+            title="Switch to list view">
+            📋 List View
+        </a>
+    </div>
+</div>
+
+<div class="board-container">
+    {% if board.phases %}
+        <!-- Phase columns -->
+        {% for phase in board.phases %}
+            {% include 'components/board_phase_column.html' %}
+        {% endfor %}
+    {% else %}
+        <!-- Empty state -->
+        <div class="empty-state">
+            <div class="empty-icon">📋</div>
+            <div class="empty-text">
+                <h3>No Phases Found</h3>
+                <p>This tasks.md file doesn't have any phase sections.</p>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<!-- Board statistics footer -->
+<div class="board-footer">
+    <div class="board-stats">
+        <span class="stat">
+            <strong>Total Tasks:</strong> {{ board.total_tasks }}
+        </span>
+        <span class="stat">
+            <strong>Completed:</strong> {{ board.completed_tasks }}
+        </span>
+        <span class="stat">
+            <strong>Progress:</strong> {{ "%.1f"|format(board.overall_completion) }}%
+        </span>
+        <span class="stat">
+            <strong>Active Phases:</strong> {{ board.active_phase_count }}
+        </span>
+    </div>
+</div>
+
+</div> <!-- Close board-wrapper -->

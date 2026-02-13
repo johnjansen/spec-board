@@ -1,0 +1,29 @@
+<!-- Task Card Template: Individual task display in board view -->
+<div class="task-card {% if task.is_complete %}task-complete{% endif %}">
+    <!-- Task header with ID and status -->
+    <div class="task-card-header">
+        <span class="task-id">{{ task.id }}</span>
+        <span class="task-status">
+            {% if task.is_complete %}
+            <span class="checkbox checked">✓</span>
+            {% else %}
+            <span class="checkbox unchecked">○</span>
+            {% endif %}
+        </span>
+    </div>
+
+    <!-- Task description -->
+    <div class="task-card-body">
+        <p class="task-description">{{ task.description }}</p>
+    </div>
+
+    <!-- Task footer with labels -->
+    <div class="task-card-footer">
+        {% if task.story_label %}
+        <span class="task-label story-label">{{ task.story_label }}</span>
+        {% endif %}
+        {% if task.is_parallel %}
+        <span class="task-label parallel-label">P</span>
+        {% endif %}
+    </div>
+</div>

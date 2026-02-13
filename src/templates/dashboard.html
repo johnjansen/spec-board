@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Spec-Board Dashboard{% endblock %}
+
+{% block content %}
+<div class="flex h-screen overflow-hidden bg-gray-50">
+    <!-- Column 1: Features (loaded via HTMX) -->
+    <!-- T065: Loading spinner with hx-indicator -->
+    <div id="column-features"
+         class="w-1/4 min-w-[280px] border-r border-gray-200 bg-white overflow-y-auto htmx-swapping"
+         hx-get="/features"
+         hx-trigger="load"
+         hx-indicator="#loading-features">
+        <div id="loading-features" class="htmx-indicator p-4 text-center text-gray-500">
+            <svg class="animate-spin h-5 w-5 mx-auto mb-2 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            Loading features...
+        </div>
+    </div>
+
+    <!-- Column 2: Artifacts (populated when feature selected) -->
+    <div id="column-artifacts"
+         class="w-1/4 min-w-[240px] border-r border-gray-200 bg-white overflow-y-auto">
+        <div class="p-4 text-sm text-gray-500">
+            Select a feature to view artifacts
+        </div>
+    </div>
+
+    <!-- Column 3: Content (populated when artifact selected) -->
+    <div id="column-content"
+         class="flex-1 bg-white overflow-y-auto">
+        <div class="p-8 text-center text-gray-500">
+            <h3 class="text-lg font-semibold mb-2">Welcome to Spec-Board</h3>
+            <p class="text-sm">Select a feature and artifact to view content</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

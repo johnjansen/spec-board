@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git fetch:*)",
+      "Bash(ls:*)",
+      "Bash(.specify/scripts/bash/create-new-feature.sh:*)",
+      "Bash(.specify/scripts/bash/setup-plan.sh:*)",
+      "Bash(git branch:*)",
+      "Bash(/Users/johnjansen/Documents/GitHub/johnjansen/spec-board/.specify/scripts/bash/update-agent-context.sh:*)",
+      "Bash(/Users/johnjansen/Documents/GitHub/johnjansen/spec-board/.specify/scripts/bash/check-prerequisites.sh:*)",
+      "Bash(git -C /Users/johnjansen/Documents/GitHub/johnjansen/spec-board rev-parse:*)",
+      "Bash(uv init:*)",
+      "Bash(uv add:*)",
+      "Bash(uv run python:*)",
+      "Bash(.specify/scripts/bash/check-prerequisites.sh:*)",
+      "Bash(python3:*)",
+      "Bash(curl:*)",
+      "Bash(pkill:*)",
+      "Bash(timeout 5 bash:*)"
+    ]
+  }
+}

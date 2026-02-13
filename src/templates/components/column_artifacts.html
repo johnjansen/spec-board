@@ -1,0 +1,133 @@
+<div class="p-4 border-b border-gray-200">
+    <h2 class="font-bold text-lg text-gray-900">Artifacts</h2>
+    {% if feature %}
+        <div class="text-xs text-gray-500 mt-1">{{ feature.full_name }}</div>
+    {% endif %}
+</div>
+
+{% if error %}
+    <!-- Error handling -->
+    <div class="p-4">
+        <div class="bg-red-50 border border-red-200 rounded-lg p-3">
+            <p class="text-sm font-semibold text-red-800">Error</p>
+            <p class="text-xs text-red-600 mt-1">{{ error }}</p>
+        </div>
+    </div>
+
+{% elif not feature %}
+    <!-- Feature not found -->
+    <div class="p-4">
+        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+            <p class="text-sm font-semibold text-yellow-800">Feature Not Found</p>
+            <p class="text-xs text-yellow-600 mt-1">The requested feature could not be found.</p>
+        </div>
+    </div>
+
+{% else %}
+    <!-- T032: Artifact list with existence indicators -->
+    <!-- T033: HTMX attributes for drill-down -->
+    <!-- T045: File size display in KB/MB -->
+    <div class="divide-y divide-gray-100">
+        <!-- spec.md -->
+        <div class="artifact-item px-4 py-3 {% if feature.artifacts.spec.exists %}hover:bg-blue-50 cursor-pointer{% else %}opacity-50{% endif %} transition-colors duration-150"
+             {% if feature.artifacts.spec.exists %}
+             hx-get="/artifacts/{{ feature.full_name }}/spec"
+             hx-target="#column-content"
+             hx-swap="innerHTML"
+             {% endif %}>
+
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    {% if feature.artifacts.spec.exists %}
+                    <span class="text-green-600 text-sm">✓</span>
+                    {% else %}
+                    <span class="text-gray-300 text-sm">○</span>
+                    {% endif %}
+                    <span class="font-medium text-sm text-gray-900">spec.md</span>
+                </div>
+
+                {% if feature.artifacts.spec.exists %}
+                <span class="text-xs text-gray-500">
+                    {{ (feature.artifacts.spec.size_bytes / 1024) | round(1) }} KB
+                </span>
+                {% else %}
+                <span class="text-xs text-gray-400">Not created</span>
+                {% endif %}
+            </div>
+
+            {% if feature.artifacts.spec.exists %}
+            <div class="text-xs text-gray-500 mt-1 pl-5">
+                Specification
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- plan.md -->
+        <div class="artifact-item px-4 py-3 {% if feature.artifacts.plan.exists %}hover:bg-blue-50 cursor-pointer{% else %}opacity-50{% endif %} transition-colors duration-150"
+             {% if feature.artifacts.plan.exists %}
+             hx-get="/artifacts/{{ feature.full_name }}/plan"
+             hx-target="#column-content"
+             hx-swap="innerHTML"
+             {% endif %}>
+
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    {% if feature.artifacts.plan.exists %}
+                    <span class="text-green-600 text-sm">✓</span>
+                    {% else %}
+                    <span class="text-gray-300 text-sm">○</span>
+                    {% endif %}
+                    <span class="font-medium text-sm text-gray-900">plan.md</span>
+                </div>
+
+                {% if feature.artifacts.plan.exists %}
+                <span class="text-xs text-gray-500">
+                    {{ (feature.artifacts.plan.size_bytes / 1024) | round(1) }} KB
+                </span>
+                {% else %}
+                <span class="text-xs text-gray-400">Not created</span>
+                {% endif %}
+            </div>
+
+            {% if feature.artifacts.plan.exists %}
+            <div class="text-xs text-gray-500 mt-1 pl-5">
+                Implementation Plan
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- tasks.md -->
+        <div class="artifact-item px-4 py-3 {% if feature.artifacts.tasks.exists %}hover:bg-blue-50 cursor-pointer{% else %}opacity-50{% endif %} transition-colors duration-150"
+             {% if feature.artifacts.tasks.exists %}
+             hx-get="/artifacts/{{ feature.full_name }}/tasks"
+             hx-target="#column-content"
+             hx-swap="innerHTML"
+             {% endif %}>
+
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    {% if feature.artifacts.tasks.exists %}
+                    <span class="text-green-600 text-sm">✓</span>
+                    {% else %}
+                    <span class="text-gray-300 text-sm">○</span>
+                    {% endif %}
+                    <span class="font-medium text-sm text-gray-900">tasks.md</span>
+                </div>
+
+                {% if feature.artifacts.tasks.exists %}
+                <span class="text-xs text-gray-500">
+                    {{ (feature.artifacts.tasks.size_bytes / 1024) | round(1) }} KB
+                </span>
+                {% else %}
+                <span class="text-xs text-gray-400">Not created</span>
+                {% endif %}
+            </div>
+
+            {% if feature.artifacts.tasks.exists %}
+            <div class="text-xs text-gray-500 mt-1 pl-5">
+                Task Breakdown
+            </div>
+            {% endif %}
+        </div>
+    </div>
+{% endif %}

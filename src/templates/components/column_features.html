@@ -1,0 +1,93 @@
+<div class="p-4 border-b border-gray-200">
+    <h2 class="font-bold text-lg text-gray-900">Features</h2>
+    {% if features %}
+        <div class="text-xs text-gray-500 mt-1">{{ features|length }} feature{{ 's' if features|length != 1 else '' }}</div>
+    {% endif %}
+</div>
+
+{% if error %}
+    <!-- T028: Permission denied / error handling -->
+    <div class="p-4">
+        <div class="bg-red-50 border border-red-200 rounded-lg p-3">
+            <p class="text-sm font-semibold text-red-800">Error</p>
+            <p class="text-xs text-red-600 mt-1">{{ error }}</p>
+        </div>
+    </div>
+
+{% elif not features %}
+    <!-- T027: Empty directory handling -->
+    <div class="p-4">
+        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+            <p class="text-sm font-semibold text-yellow-800">No Features Found</p>
+            <p class="text-xs text-yellow-600 mt-1">
+                No features found in specs/ directory.
+            </p>
+            <p class="text-xs text-yellow-500 mt-2">
+                Run <code class="bg-yellow-100 px-1 rounded">/speckit.specify</code> to create a feature.
+            </p>
+        </div>
+    </div>
+
+{% else %}
+    <!-- T025: Feature list with HTMX attributes -->
+    <!-- T029: Tailwind CSS styling (hover states, padding, colors) -->
+    <div class="divide-y divide-gray-100">
+        {% for feature in features %}
+        <div class="feature-item px-4 py-3 hover:bg-blue-50 cursor-pointer transition-colors duration-150"
+             hx-get="/features/{{ feature.full_name }}/artifacts"
+             hx-target="#column-artifacts"
+             hx-swap="innerHTML">
+
+            <!-- Feature name -->
+            <div class="font-medium text-sm text-gray-900 mb-1">
+                {{ feature.full_name }}
+            </div>
+
+            <!-- Feature metadata -->
+            <div class="flex items-center gap-2 text-xs">
+                <!-- Status badge -->
+                {% if feature.status %}
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium
+                    {% if feature.status == 'Draft' %}bg-gray-100 text-gray-700
+                    {% elif feature.status == 'Planning' %}bg-blue-100 text-blue-700
+                    {% elif feature.status == 'In Progress' %}bg-yellow-100 text-yellow-700
+                    {% elif feature.status == 'Complete' %}bg-green-100 text-green-700
+                    {% else %}bg-gray-100 text-gray-600{% endif %}">
+                    {{ feature.status }}
+                </span>
+                {% endif %}
+
+                <!-- Created date -->
+                {% if feature.created_date %}
+                <span class="text-gray-500">
+                    {{ feature.created_date.strftime('%Y-%m-%d') }}
+                </span>
+                {% endif %}
+            </div>
+
+            <!-- Artifact indicators -->
+            <div class="flex items-center gap-1 mt-2">
+                {% if feature.artifacts.spec.exists %}
+                <span class="text-xs text-green-600" title="spec.md exists">●</span>
+                {% else %}
+                <span class="text-xs text-gray-300" title="spec.md missing">○</span>
+                {% endif %}
+
+                {% if feature.artifacts.plan.exists %}
+                <span class="text-xs text-green-600" title="plan.md exists">●</span>
+                {% else %}
+                <span class="text-xs text-gray-300" title="plan.md missing">○</span>
+                {% endif %}
+
+                {% if feature.artifacts.tasks.exists %}
+                <span class="text-xs text-green-600" title="tasks.md exists">●</span>
+                {% else %}
+                <span class="text-xs text-gray-300" title="tasks.md missing">○</span>
+                {% endif %}
+
+                <span class="text-xs text-gray-400 ml-1">spec/plan/tasks</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endif %}

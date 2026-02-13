@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Spec-Board Dashboard{% endblock %}</title>
+
+    <!-- T073: Favicon and metadata -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%233b82f6'/><text x='50' y='70' font-size='60' text-anchor='middle' fill='white' font-family='system-ui'>S</text></svg>">
+    <meta name="description" content="Spec-Board Dashboard - Visualize your spec-kit artifacts with an intuitive interface">
+    <meta name="author" content="Spec-Kit">
+    <meta name="theme-color" content="#3b82f6">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- HTMX for dynamic interactions -->
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+
+    <!-- Custom CSS (if needed) -->
+    <link rel="stylesheet" href="/static/styles.css">
+
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-gray-50 antialiased">
+    {% block content %}
+    <!-- Page content goes here -->
+    {% endblock %}
+
+    {% block extra_body %}{% endblock %}
+</body>
+</html>

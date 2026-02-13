@@ -87,9 +87,9 @@
 
                 <span class="text-xs text-gray-400 ml-1">spec/plan/tasks</span>
 
-                <!-- Completion indicator (US1) -->
+                <!-- Completion indicator (US1 + US2) -->
                 {% if feature.completion_percentage == 100.0 %}
-                <span class="text-xs text-emerald-600 ml-2" title="Implementation complete">✓</span>
+                <span class="text-xs text-emerald-600 ml-2" title="{{ feature.completed_tasks }}/{{ feature.total_tasks }} tasks completed (100%)">✓</span>
                 {% endif %}
             </div>
         </div>

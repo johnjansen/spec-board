@@ -322,26 +322,28 @@ class TaskBoardParser:
             if next_phase and phase.number == next_phase.number:
                 phase.is_next = True
 
-    def calculate_completion_percentage(self, tasks_md_path: Path) -> Optional[float]:
-        """Calculate task completion percentage from tasks.md file.
+    def calculate_completion_percentage(self, tasks_md_path: Path) -> tuple[Optional[float], int, int]:
+        """Calculate task completion percentage and counts from tasks.md file.
 
         Args:
             tasks_md_path: Absolute path to tasks.md file
 
         Returns:
-            Completion percentage (0.0-100.0) or None if file missing/malformed
+            Tuple of (percentage, total_tasks, completed_tasks):
+            - percentage: 0.0-100.0 or None if file missing/malformed
+            - total_tasks: Total number of tasks found
+            - completed_tasks: Number of completed tasks
 
         Examples:
-            - All tasks complete: 100.0
-            - 5 of 10 tasks complete: 50.0
-            - No tasks found: None
-            - File doesn't exist: None
-            - File is malformed: None
+            - All complete: (100.0, 10, 10)
+            - Partial: (50.0, 10, 5)
+            - No tasks: (None, 0, 0)
+            - File missing: (None, 0, 0)
         """
         try:
             # Check if file exists
             if not tasks_md_path.exists():
-                return None
+                return (None, 0, 0)
 
             # Read file content
             content = tasks_md_path.read_text(encoding='utf-8')
@@ -362,14 +364,14 @@ class TaskBoardParser:
                     if checkbox_state.lower() == 'x':
                         completed_tasks += 1
 
-            # Return None if no tasks found (empty or malformed file)
+            # Return (None, 0, 0) if no tasks found (empty or malformed file)
             if total_tasks == 0:
-                return None
+                return (None, 0, 0)
 
             # Calculate percentage
             percentage = (completed_tasks / total_tasks) * 100.0
-            return percentage
+            return (percentage, total_tasks, completed_tasks)
 
         except Exception:
-            # Graceful error handling - return None for any parsing errors
-            return None
+            # Graceful error handling - return (None, 0, 0) for any parsing errors
+            return (None, 0, 0)

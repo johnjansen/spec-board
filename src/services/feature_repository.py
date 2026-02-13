@@ -118,16 +118,23 @@ class FeatureRepository:
             except Exception as e:
                 print(f"Warning: Failed to parse metadata for {feature_name}: {e}")
 
-        # Calculate completion percentage from tasks.md if it exists
+        # Calculate completion percentage and task counts from tasks.md if it exists
         completion_percentage = None
+        total_tasks = 0
+        completed_tasks = 0
+
         if artifacts["tasks"].exists:
             try:
                 tasks_path = artifacts["tasks"].path
-                completion_percentage = self.task_board_parser.calculate_completion_percentage(tasks_path)
+                completion_percentage, total_tasks, completed_tasks = (
+                    self.task_board_parser.calculate_completion_percentage(tasks_path)
+                )
             except Exception as e:
                 # Graceful error handling - no user-visible errors
                 print(f"Warning: Failed to calculate completion for {feature_name}: {e}")
                 completion_percentage = None
+                total_tasks = 0
+                completed_tasks = 0
 
         return Feature(
             number=number,
@@ -137,7 +144,9 @@ class FeatureRepository:
             artifacts=artifacts,
             created_date=created_date,
             status=status,
-            completion_percentage=completion_percentage
+            completion_percentage=completion_percentage,
+            total_tasks=total_tasks,
+            completed_tasks=completed_tasks
         )
 
     def _create_artifact(self, feature_path: Path, artifact_type: str) -> Artifact:

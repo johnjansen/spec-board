@@ -84,23 +84,23 @@ No tasks required - reusing existing:
 
 ### Implementation for User Story 2
 
-- [ ] T005 [US2] Extend task_board_parser to return detailed completion stats
+- [x] T005 [US2] Extend task_board_parser to return detailed completion stats
   - Modify calculate_completion_percentage() to also return total_tasks and completed_tasks
   - Return tuple: `(percentage, total, completed)` or `(None, 0, 0)`
   - Update type hints accordingly
   - Dependencies: T001
 
-- [ ] T006 [US2] Update Feature model to store task counts
+- [x] T006 [US2] Update Feature model to store task counts
   - Add `total_tasks: int` and `completed_tasks: int` attributes
   - Default to 0 when completion_percentage is None
   - Dependencies: T002, T005
 
-- [ ] T007 [US2] Update feature_repository to populate task counts
+- [x] T007 [US2] Update feature_repository to populate task counts
   - Modify T003 code to unpack tuple from calculate_completion_percentage()
   - Assign total_tasks and completed_tasks to feature
   - Dependencies: T003, T005, T006
 
-- [ ] T008 [US2] Add tooltip to completion indicator in column_features.html
+- [x] T008 [US2] Add tooltip to completion indicator in column_features.html
   - Replace title attribute with Tailwind CSS tooltip implementation
   - Show: "{completed_tasks}/{total_tasks} tasks completed (100%)"
   - Ensure tooltip appears on hover and disappears on mouse leave

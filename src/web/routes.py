@@ -9,9 +9,8 @@ from .app import app, templates
 from ..services.feature_repository import FeatureRepository
 
 # Configure specs directory path
-# Use project-local specs directory
-PROJECT_ROOT = Path(__file__).parent.parent.parent
-SPECS_DIR = PROJECT_ROOT / "specs"
+# Look for specs/ in the current working directory where spec-board is run
+SPECS_DIR = Path.cwd() / "specs"
 
 # Initialize repository
 feature_repo = FeatureRepository(SPECS_DIR)

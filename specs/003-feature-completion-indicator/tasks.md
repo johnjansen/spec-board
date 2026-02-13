@@ -119,7 +119,7 @@ No tasks required - reusing existing:
 
 ### Implementation for User Story 3
 
-- [ ] T009 [US3] Review and refine indicator styling in column_features.html
+- [x] T009 [US3] Review and refine indicator styling in column_features.html
   - Test with features having different status badges + completion states
   - Ensure indicator and badge use different visual elements:
     - Different icons (status uses colored badges, completion uses checkmark)

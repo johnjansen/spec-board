@@ -47,24 +47,24 @@ No tasks required - reusing existing:
 
 ### Implementation for User Story 1
 
-- [ ] T001 [P] [US1] Add completion calculation method to src/services/task_board_parser.py
+- [x] T001 [P] [US1] Add completion calculation method to src/services/task_board_parser.py
   - Method: `calculate_completion_percentage(tasks_md_path: Path) -> Optional[float]`
   - Parse tasks.md for checkboxes (`- [ ]` and `- [x]`)
   - Return percentage (0.0-100.0) or None if file missing/malformed
   - Handle edge cases: empty file, no checkboxes, malformed markdown
 
-- [ ] T002 [P] [US1] Add completion_percentage property to src/models/feature.py
+- [x] T002 [P] [US1] Add completion_percentage property to src/models/feature.py
   - Add `completion_percentage: Optional[float]` attribute to Feature class
   - Add type hints (float or None)
   - Document property purpose in docstring
 
-- [ ] T003 [US1] Update src/services/feature_repository.py to populate completion data
+- [x] T003 [US1] Update src/services/feature_repository.py to populate completion data
   - In `_load_feature_basic()` method, call task_board_parser.calculate_completion_percentage()
   - Assign result to feature.completion_percentage
   - Handle None case gracefully (no error shown to user)
   - Dependencies: T001, T002
 
-- [ ] T004 [US1] Add completion indicator HTML to src/templates/components/column_features.html
+- [x] T004 [US1] Add completion indicator HTML to src/templates/components/column_features.html
   - Add conditional block after artifact indicators (line ~89)
   - Show indicator only if `feature.completion_percentage == 100.0`
   - Use checkmark icon or emoji (✓ or ✅)

@@ -321,3 +321,55 @@ class TaskBoardParser:
                 phase.is_current = True
             if next_phase and phase.number == next_phase.number:
                 phase.is_next = True
+
+    def calculate_completion_percentage(self, tasks_md_path: Path) -> Optional[float]:
+        """Calculate task completion percentage from tasks.md file.
+
+        Args:
+            tasks_md_path: Absolute path to tasks.md file
+
+        Returns:
+            Completion percentage (0.0-100.0) or None if file missing/malformed
+
+        Examples:
+            - All tasks complete: 100.0
+            - 5 of 10 tasks complete: 50.0
+            - No tasks found: None
+            - File doesn't exist: None
+            - File is malformed: None
+        """
+        try:
+            # Check if file exists
+            if not tasks_md_path.exists():
+                return None
+
+            # Read file content
+            content = tasks_md_path.read_text(encoding='utf-8')
+
+            # Pattern: - [ ] or - [x] or - [X]
+            checkbox_pattern = r'^\s*-\s+\[([ xX])\]'
+
+            # Extract all checkboxes
+            lines = content.split('\n')
+            total_tasks = 0
+            completed_tasks = 0
+
+            for line in lines:
+                match = re.match(checkbox_pattern, line)
+                if match:
+                    total_tasks += 1
+                    checkbox_state = match.group(1)
+                    if checkbox_state.lower() == 'x':
+                        completed_tasks += 1
+
+            # Return None if no tasks found (empty or malformed file)
+            if total_tasks == 0:
+                return None
+
+            # Calculate percentage
+            percentage = (completed_tasks / total_tasks) * 100.0
+            return percentage
+
+        except Exception:
+            # Graceful error handling - return None for any parsing errors
+            return None

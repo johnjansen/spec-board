@@ -9,6 +9,7 @@ from ..models.artifact import Artifact, ArtifactType
 from ..models.artifact_metadata import ArtifactMetadata
 from .file_system_reader import FileSystemReader
 from .artifact_parser import ArtifactParser
+from .task_board_parser import TaskBoardParser
 
 
 class FeatureRepository:
@@ -27,6 +28,7 @@ class FeatureRepository:
         self.specs_dir = specs_dir
         self.fs_reader = FileSystemReader(specs_dir)
         self.artifact_parser = ArtifactParser()
+        self.task_board_parser = TaskBoardParser()
 
     def list_all(self) -> List[Feature]:
         """List all features in the specs/ directory.
@@ -116,6 +118,17 @@ class FeatureRepository:
             except Exception as e:
                 print(f"Warning: Failed to parse metadata for {feature_name}: {e}")
 
+        # Calculate completion percentage from tasks.md if it exists
+        completion_percentage = None
+        if artifacts["tasks"].exists:
+            try:
+                tasks_path = artifacts["tasks"].path
+                completion_percentage = self.task_board_parser.calculate_completion_percentage(tasks_path)
+            except Exception as e:
+                # Graceful error handling - no user-visible errors
+                print(f"Warning: Failed to calculate completion for {feature_name}: {e}")
+                completion_percentage = None
+
         return Feature(
             number=number,
             short_name=short_name,
@@ -123,7 +136,8 @@ class FeatureRepository:
             path=feature_path,
             artifacts=artifacts,
             created_date=created_date,
-            status=status
+            status=status,
+            completion_percentage=completion_percentage
         )
 
     def _create_artifact(self, feature_path: Path, artifact_type: str) -> Artifact:

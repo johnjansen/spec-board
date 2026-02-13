@@ -16,33 +16,54 @@ A web-based visualization dashboard for [spec-kit](https://github.com/anthropics
 
 ## Quick Start
 
-### Prerequisites
+### Run Without Installing (Recommended)
 
-- Python 3.11+
-- [uv](https://github.com/astral-sh/uv) package manager
+Use `uvx` to run directly from GitHub without cloning or installing:
 
-### Installation
+```bash
+uvx --from git+https://github.com/johnjansen/spec-board spec-board
+```
+
+The dashboard will start automatically at http://localhost:8000
+
+**Custom port:**
+```bash
+uvx --from git+https://github.com/johnjansen/spec-board spec-board --port 8080
+```
+
+### Run from Local Clone
 
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/johnjansen/spec-board.git
    cd spec-board
    ```
 
-2. Install dependencies:
+2. Run with uvx (no installation needed):
    ```bash
-   uv sync
+   uvx .
    ```
 
-3. Run the development server:
+3. Or install and run with uv:
+   ```bash
+   uv sync
+   uv run spec-board
+   ```
+
+4. Or run the development server with hot reload:
    ```bash
    uv run uvicorn src.web.app:app --reload
    ```
 
-4. Open your browser:
+5. Open your browser:
    ```
    http://localhost:8000
    ```
+
+### Prerequisites
+
+- Python 3.11+
+- [uv](https://github.com/astral-sh/uv) package manager (includes uvx)
 
 ## Project Structure
 

@@ -16,7 +16,12 @@
       "Bash(python3:*)",
       "Bash(curl:*)",
       "Bash(pkill:*)",
-      "Bash(timeout 5 bash:*)"
+      "Bash(timeout 5 bash:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nfeat: Add Kanban board view for tasks.md visualization\n\nComplete implementation of feature 002-kanban-board-view with full-screen\nboard view, phase-based task organization, and auto-refresh.\n\nFeatures:\n- Full-screen Kanban board layout with horizontal scrolling\n- Phase columns showing task progress with completion percentages\n- Task cards with IDs, descriptions, story labels, and status\n- Current and next phase indicators with visual highlighting\n- Toggle between list view and board view \\(HTMX-powered\\)\n- Auto-refresh every 30 seconds for real-time updates\n- Responsive design with proper scrolling constraints\n- Sticky header \\(List View button\\) and footer \\(statistics\\)\n\nTechnical implementation:\n- TaskBoardParser service for parsing tasks.md into structured data\n- Phase, Task, and Board dataclasses with completion calculations\n- Server-side rendering with Jinja2 templates\n- CSS Grid layout with flexbox column structure\n- HTMX for seamless view switching and auto-refresh\n- Read-only visualization \\(no drag-drop or editing\\)\n\nAll 44 implementation tasks completed \\(100%\\)\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(gh repo create:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push)"
     ]
   }
 }

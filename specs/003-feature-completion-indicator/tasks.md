@@ -137,18 +137,18 @@ No tasks required - reusing existing:
 
 **Purpose**: Validation, documentation, and refinements
 
-- [ ] T010 [P] Run manual validation using quickstart.md test scenarios
+- [x] T010 [P] Run manual validation using quickstart.md test scenarios
   - Execute all 7 scenarios from quickstart.md
   - Verify edge cases: missing tasks.md, empty tasks.md, malformed tasks.md
   - Verify auto-refresh works (indicator updates within 3 seconds)
   - Document any issues found
 
-- [ ] T011 [P] Update README or documentation with completion indicator feature
+- [x] T011 [P] Update README or documentation with completion indicator feature
   - Add section describing the completion indicator
   - Include screenshot or description of what it looks like
   - Explain difference between status badge and completion indicator
 
-- [ ] T012 Code review and cleanup
+- [x] T012 Code review and cleanup
   - Review all modified files for code quality
   - Ensure type hints are present on all new/modified functions
   - Verify PEP 8 compliance

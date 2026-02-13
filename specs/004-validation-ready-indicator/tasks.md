@@ -260,3 +260,13 @@ For single developer:
 - US1 is the MVP - provides core functionality
 - US2 and US3 are enhancements that can be skipped if time-constrained
 - Similar pattern to feature 003 (completion indicator) but with task classification logic
+
+---
+
+## Test Validation Tasks (for demonstration)
+
+These tasks demonstrate the V indicator functionality:
+
+- [ ] Manual validation: Verify V indicator appears when only validation tasks remain
+- [ ] Manual validation: Test tooltip shows correct validation count
+- [ ] Manual validation: Confirm visual distinction between V and ✓ indicators

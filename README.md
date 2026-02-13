@@ -2,6 +2,14 @@
 
 A web-based visualization dashboard for [spec-kit](https://github.com/anthropics/spec-kit) artifacts. Browse and view your feature specifications, implementation plans, and task breakdowns with an intuitive Miller columns interface.
 
+## ⚡ Quick Start - Run Without Installing
+
+```bash
+uvx --from git+https://github.com/johnjansen/spec-board spec-board
+```
+
+Then open http://localhost:8000 in your browser. That's it! No installation, no setup required.
+
 ## Features
 
 - 🗂️ **3-Column Interface** - Clean Miller columns-style navigation: features → artifacts → content

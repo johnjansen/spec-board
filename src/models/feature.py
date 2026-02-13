@@ -24,6 +24,9 @@ class Feature:
     artifacts: Dict[str, 'Artifact']     # Available artifacts by type (spec, plan, tasks)
     created_date: Optional[datetime]     # Extracted from spec.md frontmatter
     status: Optional[str]                # Extracted from spec.md frontmatter (Draft, Planning, etc.)
+    completion_percentage: Optional[float] = None  # Task completion percentage (0.0-100.0) derived from tasks.md
+    total_tasks: int = 0                 # Total number of tasks in tasks.md
+    completed_tasks: int = 0             # Number of completed tasks in tasks.md
 
     def __post_init__(self) -> None:
         """Validate feature after initialization."""

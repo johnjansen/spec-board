@@ -17,6 +17,7 @@ Then open http://localhost:8000 in your browser. That's it! No installation, no 
 - ✅ **Task Progress Tracking** - Visual progress bars and completion counters for task lists
 - 📊 **Kanban Board View** - Visualize tasks.md as a board with phase columns and task cards
 - 🎯 **Phase Indicators** - Automatic current/next phase highlighting for progress tracking
+- ✓ **Completion Indicators** - Automatic checkmarks for features with 100% task completion (hover for details)
 - 🎨 **Syntax Highlighting** - Beautiful code syntax highlighting with multiple themes
 - 📱 **Responsive Design** - Works on desktop, tablet, and mobile devices
 - ⚡ **Fast Navigation** - HTMX-powered partial updates without page reloads

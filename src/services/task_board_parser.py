@@ -6,7 +6,7 @@ for visual progress tracking in board view.
 
 import re
 from dataclasses import dataclass, field
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 
 @dataclass
@@ -322,7 +322,7 @@ class TaskBoardParser:
             if next_phase and phase.number == next_phase.number:
                 phase.is_next = True
 
-    def calculate_completion_percentage(self, tasks_md_path: Path) -> tuple[Optional[float], int, int]:
+    def calculate_completion_percentage(self, tasks_md_path: Path) -> Tuple[Optional[float], int, int]:
         """Calculate task completion percentage and counts from tasks.md file.
 
         Args:

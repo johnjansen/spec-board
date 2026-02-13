@@ -47,33 +47,33 @@ No tasks required - reusing existing:
 
 ### Implementation for User Story 1
 
-- [ ] T001 [P] [US1] Add validation detection method to src/services/task_board_parser.py
+- [x] T001 [P] [US1] Add validation detection method to src/services/task_board_parser.py
   - Method: `classify_task(task_description: str) -> str`
   - Returns "validation" if task starts with "Manual validation:" (case-insensitive)
   - Returns "implementation" otherwise
   - Add type hints
 
-- [ ] T002 [P] [US1] Extend completion calculation in src/services/task_board_parser.py
+- [x] T002 [P] [US1] Extend completion calculation in src/services/task_board_parser.py
   - Modify `calculate_completion_percentage()` to return validation breakdown
   - New signature: `Tuple[Optional[float], int, int, int, int]`
   - Returns: (percentage, total_tasks, completed_tasks, validation_incomplete, implementation_incomplete)
   - Use classify_task() to categorize each task
   - Handle edge cases: empty file, no tasks, malformed markdown
 
-- [ ] T003 [P] [US1] Add validation properties to src/models/feature.py
+- [x] T003 [P] [US1] Add validation properties to src/models/feature.py
   - Add `is_validation_ready: bool = False`
   - Add `validation_tasks_remaining: int = 0`
   - Add `implementation_tasks_remaining: int = 0`
   - Add type hints and docstrings
 
-- [ ] T004 [US1] Update src/services/feature_repository.py to populate validation data
+- [x] T004 [US1] Update src/services/feature_repository.py to populate validation data
   - In `_load_feature_basic()` method, unpack extended tuple from calculate_completion_percentage()
   - Calculate `is_validation_ready = (implementation_incomplete == 0 and validation_incomplete > 0)`
   - Assign validation_tasks_remaining and implementation_tasks_remaining to feature
   - Handle None case gracefully (no error shown to user)
   - Dependencies: T002, T003
 
-- [ ] T005 [US1] Add V indicator HTML to src/templates/components/column_features.html
+- [x] T005 [US1] Add V indicator HTML to src/templates/components/column_features.html
   - Add conditional block after existing completion indicator (line ~93)
   - Show "V" only if `feature.is_validation_ready == True`
   - Use yellow/amber color (e.g., `text-amber-600` or `text-yellow-600`)
@@ -94,7 +94,7 @@ No tasks required - reusing existing:
 
 ### Implementation for User Story 2
 
-- [ ] T006 [US2] Update V indicator tooltip in src/templates/components/column_features.html
+- [x] T006 [US2] Update V indicator tooltip in src/templates/components/column_features.html
   - Modify title attribute added in T005 to show detailed information
   - Format: "{validation_tasks_remaining} validation task{'s' if != 1 else ''} remaining"
   - Alternative format if helpful: "Implementation complete - {count} validation tasks pending"
@@ -114,7 +114,7 @@ No tasks required - reusing existing:
 
 ### Implementation for User Story 3
 
-- [ ] T007 [US3] Review and refine indicator styling in src/templates/components/column_features.html
+- [x] T007 [US3] Review and refine indicator styling in src/templates/components/column_features.html
   - Test with features having different indicator states side-by-side
   - Ensure "V" and "✓" use clearly different visual elements:
     - "V" = yellow/amber color (`text-amber-600` or `text-yellow-600`)
@@ -134,7 +134,7 @@ No tasks required - reusing existing:
 
 **Purpose**: Validation, documentation, and refinements
 
-- [ ] T008 [P] Run manual validation using quickstart.md test scenarios
+- [x] T008 [P] Run manual validation using quickstart.md test scenarios
   - Execute all 10 scenarios from quickstart.md
   - Scenario 1: V indicator appears (implementation complete, validation pending)
   - Scenario 2: ✓ indicator persists (all tasks complete)
@@ -148,13 +148,13 @@ No tasks required - reusing existing:
   - Scenario 10: Case insensitivity
   - Document any issues found
 
-- [ ] T009 [P] Update README.md or documentation with validation-ready indicator feature
+- [x] T009 [P] Update README.md or documentation with validation-ready indicator feature
   - Add section describing the validation-ready indicator
   - Explain difference between status badge, ✓ indicator (feature 003), and V indicator (feature 004)
   - Document the "Manual validation:" prefix convention
   - Include screenshot or description of what indicators look like
 
-- [ ] T010 Code review and cleanup
+- [x] T010 Code review and cleanup
   - Review all modified files for code quality
   - Ensure type hints are present on all new/modified functions
   - Verify PEP 8 compliance

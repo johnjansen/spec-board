@@ -18,8 +18,8 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
-# Get project root (3 levels up from this file: src/web/app.py -> spec-board/)
-PROJECT_ROOT = Path(__file__).parent.parent.parent
+# Get the src package root (2 levels up from this file: src/web/app.py -> src/)
+SRC_ROOT = Path(__file__).parent.parent
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -33,8 +33,8 @@ app = FastAPI(
 async def startup_event():
     """Log application startup."""
     logger.info("Spec-Board Dashboard starting up...")
-    logger.info(f"Templates directory: {PROJECT_ROOT / 'src' / 'templates'}")
-    logger.info(f"Static files directory: {PROJECT_ROOT / 'static'}")
+    logger.info(f"Templates directory: {SRC_ROOT / 'templates'}")
+    logger.info(f"Static files directory: {SRC_ROOT / 'static'}")
 
 @app.on_event("shutdown")
 async def shutdown_event():
@@ -42,10 +42,10 @@ async def shutdown_event():
     logger.info("Spec-Board Dashboard shutting down...")
 
 # Configure Jinja2 templates
-templates = Jinja2Templates(directory=str(PROJECT_ROOT / "src" / "templates"))
+templates = Jinja2Templates(directory=str(SRC_ROOT / "templates"))
 
 # Mount static files
-app.mount("/static", StaticFiles(directory=str(PROJECT_ROOT / "static")), name="static")
+app.mount("/static", StaticFiles(directory=str(SRC_ROOT / "static")), name="static")
 
 
 @app.get("/health")

@@ -22,4 +22,4 @@ spec-board = "src.__main__:main"
 packages = ["src", "src.models", "src.services", "src.web"]
 
 [tool.setuptools.package-data]
-src = ["templates/**/*.html"]
+src = ["templates/**/*.html", "static/**/*"]

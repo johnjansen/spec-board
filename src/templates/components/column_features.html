@@ -87,9 +87,12 @@
 
                 <span class="text-xs text-gray-400 ml-1">spec/plan/tasks</span>
 
-                <!-- Completion indicator (US1 + US2 + US3) -->
+                <!-- Completion indicator (feature 003) -->
                 {% if feature.completion_percentage == 100.0 %}
                 <span class="text-xs text-emerald-600 font-bold ml-2 border-l border-gray-200 pl-2" title="{{ feature.completed_tasks }}/{{ feature.total_tasks }} tasks completed (100%)">✓</span>
+                <!-- Validation-ready indicator (feature 004) -->
+                {% elif feature.is_validation_ready %}
+                <span class="text-xs text-amber-600 font-bold ml-2 border-l border-gray-200 pl-2" title="{{ feature.validation_tasks_remaining }} validation task{{ 's' if feature.validation_tasks_remaining != 1 else '' }} remaining">V</span>
                 {% endif %}
             </div>
         </div>

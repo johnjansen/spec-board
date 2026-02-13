@@ -323,56 +323,85 @@ class TaskBoardParser:
             if next_phase and phase.number == next_phase.number:
                 phase.is_next = True
 
-    def calculate_completion_percentage(self, tasks_md_path: Path) -> Tuple[Optional[float], int, int]:
+    def classify_task(self, task_description: str) -> str:
+        """Classify task as validation or implementation.
+
+        Args:
+            task_description: Full task description text
+
+        Returns:
+            'validation' if task starts with "Manual validation:" (case-insensitive)
+            'implementation' otherwise
+        """
+        normalized = task_description.lower().strip()
+        if normalized.startswith("manual validation:"):
+            return "validation"
+        return "implementation"
+
+    def calculate_completion_percentage(self, tasks_md_path: Path) -> Tuple[Optional[float], int, int, int, int]:
         """Calculate task completion percentage and counts from tasks.md file.
 
         Args:
             tasks_md_path: Absolute path to tasks.md file
 
         Returns:
-            Tuple of (percentage, total_tasks, completed_tasks):
+            Tuple of (percentage, total_tasks, completed_tasks, validation_incomplete, implementation_incomplete):
             - percentage: 0.0-100.0 or None if file missing/malformed
             - total_tasks: Total number of tasks found
             - completed_tasks: Number of completed tasks
+            - validation_incomplete: Number of incomplete validation tasks
+            - implementation_incomplete: Number of incomplete implementation tasks
 
         Examples:
-            - All complete: (100.0, 10, 10)
-            - Partial: (50.0, 10, 5)
-            - No tasks: (None, 0, 0)
-            - File missing: (None, 0, 0)
+            - All complete: (100.0, 10, 10, 0, 0)
+            - Partial: (50.0, 10, 5, 2, 3)
+            - No tasks: (None, 0, 0, 0, 0)
+            - File missing: (None, 0, 0, 0, 0)
         """
         try:
             # Check if file exists
             if not tasks_md_path.exists():
-                return (None, 0, 0)
+                return (None, 0, 0, 0, 0)
 
             # Read file content
             content = tasks_md_path.read_text(encoding='utf-8')
 
-            # Pattern: - [ ] or - [x] or - [X]
-            checkbox_pattern = r'^\s*-\s+\[([ xX])\]'
+            # Pattern: - [ ] or - [x] or - [X], followed by task description
+            checkbox_pattern = r'^\s*-\s+\[([ xX])\]\s+(.*)$'
 
             # Extract all checkboxes
             lines = content.split('\n')
             total_tasks = 0
             completed_tasks = 0
+            validation_incomplete = 0
+            implementation_incomplete = 0
 
             for line in lines:
                 match = re.match(checkbox_pattern, line)
                 if match:
                     total_tasks += 1
                     checkbox_state = match.group(1)
-                    if checkbox_state.lower() == 'x':
-                        completed_tasks += 1
+                    task_description = match.group(2)
 
-            # Return (None, 0, 0) if no tasks found (empty or malformed file)
+                    is_complete = checkbox_state.lower() == 'x'
+                    if is_complete:
+                        completed_tasks += 1
+                    else:
+                        # Task is incomplete - classify it
+                        task_type = self.classify_task(task_description)
+                        if task_type == "validation":
+                            validation_incomplete += 1
+                        else:
+                            implementation_incomplete += 1
+
+            # Return (None, 0, 0, 0, 0) if no tasks found (empty or malformed file)
             if total_tasks == 0:
-                return (None, 0, 0)
+                return (None, 0, 0, 0, 0)
 
             # Calculate percentage
             percentage = (completed_tasks / total_tasks) * 100.0
-            return (percentage, total_tasks, completed_tasks)
+            return (percentage, total_tasks, completed_tasks, validation_incomplete, implementation_incomplete)
 
         except Exception:
-            # Graceful error handling - return (None, 0, 0) for any parsing errors
-            return (None, 0, 0)
+            # Graceful error handling - return (None, 0, 0, 0, 0) for any parsing errors
+            return (None, 0, 0, 0, 0)

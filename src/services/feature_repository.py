@@ -122,19 +122,29 @@ class FeatureRepository:
         completion_percentage = None
         total_tasks = 0
         completed_tasks = 0
+        validation_tasks_remaining = 0
+        implementation_tasks_remaining = 0
+        is_validation_ready = False
 
         if artifacts["tasks"].exists:
             try:
                 tasks_path = artifacts["tasks"].path
-                completion_percentage, total_tasks, completed_tasks = (
+                completion_percentage, total_tasks, completed_tasks, validation_incomplete, implementation_incomplete = (
                     self.task_board_parser.calculate_completion_percentage(tasks_path)
                 )
+                validation_tasks_remaining = validation_incomplete
+                implementation_tasks_remaining = implementation_incomplete
+                # Feature is validation-ready if implementation is complete but validation remains
+                is_validation_ready = (implementation_incomplete == 0 and validation_incomplete > 0)
             except Exception as e:
                 # Graceful error handling - no user-visible errors
                 print(f"Warning: Failed to calculate completion for {feature_name}: {e}")
                 completion_percentage = None
                 total_tasks = 0
                 completed_tasks = 0
+                validation_tasks_remaining = 0
+                implementation_tasks_remaining = 0
+                is_validation_ready = False
 
         return Feature(
             number=number,
@@ -146,7 +156,10 @@ class FeatureRepository:
             status=status,
             completion_percentage=completion_percentage,
             total_tasks=total_tasks,
-            completed_tasks=completed_tasks
+            completed_tasks=completed_tasks,
+            is_validation_ready=is_validation_ready,
+            validation_tasks_remaining=validation_tasks_remaining,
+            implementation_tasks_remaining=implementation_tasks_remaining
         )
 
     def _create_artifact(self, feature_path: Path, artifact_type: str) -> Artifact:

@@ -3,6 +3,8 @@
 Auto-generated from all feature plans. Last updated: 2026-02-14
 
 ## Active Technologies
+- Python 3.11+ + FastAPI 0.109+, Jinja2 3.1+, HTMX (via CDN), Tailwind CSS (via CDN) (004-validation-ready-indicator)
+- File-based (reads tasks.md from feature directories) (004-validation-ready-indicator)
 
 - Python 3.11+ + FastAPI 0.129+, Jinja2 3.1+, existing task_board_parser service (003-feature-completion-indicator)
 
@@ -23,6 +25,7 @@ cd src [ONLY COMMANDS FOR ACTIVE TECHNOLOGIES][ONLY COMMANDS FOR ACTIVE TECHNOLO
 Python 3.11+: Follow standard conventions
 
 ## Recent Changes
+- 004-validation-ready-indicator: Added Python 3.11+ + FastAPI 0.109+, Jinja2 3.1+, HTMX (via CDN), Tailwind CSS (via CDN)
 
 - 003-feature-completion-indicator: Added Python 3.11+ + FastAPI 0.129+, Jinja2 3.1+, existing task_board_parser service
 

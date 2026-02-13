@@ -27,6 +27,9 @@ class Feature:
     completion_percentage: Optional[float] = None  # Task completion percentage (0.0-100.0) derived from tasks.md
     total_tasks: int = 0                 # Total number of tasks in tasks.md
     completed_tasks: int = 0             # Number of completed tasks in tasks.md
+    is_validation_ready: bool = False    # True if only validation tasks remain incomplete
+    validation_tasks_remaining: int = 0  # Count of incomplete validation tasks
+    implementation_tasks_remaining: int = 0  # Count of incomplete implementation tasks
 
     def __post_init__(self) -> None:
         """Validate feature after initialization."""

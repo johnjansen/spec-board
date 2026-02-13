@@ -17,7 +17,10 @@ Then open http://localhost:8000 in your browser. That's it! No installation, no 
 - ✅ **Task Progress Tracking** - Visual progress bars and completion counters for task lists
 - 📊 **Kanban Board View** - Visualize tasks.md as a board with phase columns and task cards
 - 🎯 **Phase Indicators** - Automatic current/next phase highlighting for progress tracking
-- ✓ **Completion Indicators** - Automatic checkmarks for features with 100% task completion (hover for details)
+- ✓ **Completion Indicators** - Smart indicators showing feature status:
+  - ✓ (green) = All tasks complete (100%)
+  - V (amber) = Implementation complete, validation tasks remaining
+  - Hover for detailed task counts
 - 🎨 **Syntax Highlighting** - Beautiful code syntax highlighting with multiple themes
 - 📱 **Responsive Design** - Works on desktop, tablet, and mobile devices
 - ⚡ **Fast Navigation** - HTMX-powered partial updates without page reloads
@@ -101,6 +104,32 @@ The dashboard automatically loads all features from your `specs/` directory. Fea
 ### Browsing Artifacts
 
 Click a feature to see its artifacts (spec.md, plan.md, tasks.md) in the second column. Click any artifact to view its rendered markdown content in the third column.
+
+### Completion Indicators
+
+Features display smart status indicators based on their tasks.md file:
+
+#### ✓ Complete (Green)
+Shows when **all tasks are complete** (100% completion), including both implementation and validation tasks.
+
+#### V Validation-Ready (Amber/Yellow)
+Shows when **implementation is complete** but **validation tasks remain**. This helps identify features that are:
+- Ready for manual testing
+- Waiting for validation approval
+- Code-complete but not fully verified
+
+**How it works**: Tasks starting with "Manual validation:" (case-insensitive) are classified as validation tasks. When all non-validation tasks are complete, the V indicator appears.
+
+**Example tasks.md**:
+```markdown
+- [x] T001 Create user model
+- [x] T002 Implement authentication service
+- [ ] Manual validation: Test login flow
+- [ ] Manual validation: Verify error handling
+```
+→ Shows **V** indicator (implementation complete, 2 validation tasks remaining)
+
+**Hover** over any indicator to see detailed task counts.
 
 ### Board View (Kanban Visualization)
 

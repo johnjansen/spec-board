@@ -6,10 +6,11 @@
 <div class="flex h-screen overflow-hidden bg-gray-50">
     <!-- Column 1: Features (loaded via HTMX) -->
     <!-- T065: Loading spinner with hx-indicator -->
+    <!-- Auto-refresh every 3 seconds to detect new features -->
     <div id="column-features"
          class="w-1/4 min-w-[280px] border-r border-gray-200 bg-white overflow-y-auto htmx-swapping"
          hx-get="/features"
-         hx-trigger="load"
+         hx-trigger="load, every 3s"
          hx-indicator="#loading-features">
         <div id="loading-features" class="htmx-indicator p-4 text-center text-gray-500">
             <svg class="animate-spin h-5 w-5 mx-auto mb-2 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

@@ -528,12 +528,15 @@ async def preview_markdown(request: Request) -> JSONResponse:
 
         # Render markdown to HTML
         from ..services.markdown_renderer import MarkdownRenderer
+        from ..models.artifact import ArtifactType
         renderer = MarkdownRenderer()
 
         # Create a temporary artifact-like object for rendering
         class PreviewArtifact:
             def __init__(self, content):
                 self.content_raw = content
+                self.type = ArtifactType.SPEC  # Default to spec type for preview
+                self.content_html = None  # For caching
 
         preview_artifact = PreviewArtifact(content)
         html_content = renderer.render(preview_artifact)

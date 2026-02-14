@@ -1,0 +1,212 @@
+<!-- Markdown Editor Component (Feature 005-markdown-editor) -->
+<div id="editor-container" class="flex flex-col h-full">
+    <!-- Editor Header -->
+    <div class="p-4 border-b border-gray-200 bg-gray-50">
+        <div class="flex items-center justify-between">
+            <!-- Breadcrumb / File Path -->
+            <div class="flex items-center gap-2 text-sm text-gray-600">
+                <span class="font-semibold text-gray-900">Editing:</span>
+                <span class="font-mono text-xs">{{ filepath }}</span>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex items-center gap-2">
+                <button
+                    id="btn-preview"
+                    class="px-4 py-2 text-sm font-medium text-gray-700 bg-emerald-100 border border-emerald-300 rounded-md hover:bg-emerald-200 transition-colors duration-150"
+                    title="Toggle preview mode">
+                    👁️ Preview
+                </button>
+                <button
+                    id="btn-cancel"
+                    class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 transition-colors duration-150"
+                    title="Cancel editing and discard changes">
+                    Cancel
+                </button>
+                <button
+                    id="btn-save"
+                    class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors duration-150"
+                    title="Save changes">
+                    Save
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Formatting Toolbar -->
+    <div class="px-4 py-2 border-b border-gray-200 bg-white flex items-center gap-1 overflow-x-auto">
+        <!-- Heading Dropdown -->
+        <div class="relative">
+            <button
+                id="btn-heading"
+                type="button"
+                onclick="window.showHeadingDropdown()"
+                class="px-3 py-1.5 text-xs font-medium text-gray-700 bg-gray-100 rounded hover:bg-gray-200 transition-colors"
+                title="Insert heading (H1-H6)">
+                Heading ▾
+            </button>
+        </div>
+
+        <div class="w-px h-6 bg-gray-300"></div>
+
+        <!-- Bold -->
+        <button
+            type="button"
+            onclick="window.insertBold()"
+            class="px-3 py-1.5 text-xs font-semibold text-gray-700 bg-gray-100 rounded hover:bg-gray-200 transition-colors"
+            title="Bold (Ctrl/Cmd+B)">
+            <strong>B</strong>
+        </button>
+
+        <!-- Italic -->
+        <button
+            type="button"
+            onclick="window.insertItalic()"
+            class="px-3 py-1.5 text-xs italic text-gray-700 bg-gray-100 rounded hover:bg-gray-200 transition-colors"
+            title="Italic (Ctrl/Cmd+I)">
+            <em>I</em>
+        </button>
+
+        <div class="w-px h-6 bg-gray-300"></div>
+
+        <!-- Link -->
+        <button
+            type="button"
+            onclick="window.insertLink()"
+            class="px-3 py-1.5 text-xs font-medium text-gray-700 bg-gray-100 rounded hover:bg-gray-200 transition-colors"
+            title="Insert link (Ctrl/Cmd+K)">
+            🔗 Link
+        </button>
+
+        <!-- Inline Code -->
+        <button
+            type="button"
+            onclick="window.insertInlineCode()"
+            class="px-3 py-1.5 text-xs font-mono text-gray-700 bg-gray-100 rounded hover:bg-gray-200 transition-colors"
+            title="Inline code">
+            &lt;/&gt;
+        </button>
+
+        <div class="w-px h-6 bg-gray-300"></div>
+
+        <!-- Unordered List -->
+        <button
+            type="button"
+            onclick="window.insertList()"
+            class="px-3 py-1.5 text-xs font-medium text-gray-700 bg-gray-100 rounded hover:bg-gray-200 transition-colors"
+            title="Bullet list">
+            • List
+        </button>
+
+        <!-- Ordered List -->
+        <button
+            type="button"
+            onclick="window.insertOrderedList()"
+            class="px-3 py-1.5 text-xs font-medium text-gray-700 bg-gray-100 rounded hover:bg-gray-200 transition-colors"
+            title="Numbered list">
+            1. List
+        </button>
+
+        <div class="w-px h-6 bg-gray-300"></div>
+
+        <!-- Code Block -->
+        <button
+            type="button"
+            onclick="window.insertCodeBlock()"
+            class="px-3 py-1.5 text-xs font-mono text-gray-700 bg-gray-100 rounded hover:bg-gray-200 transition-colors"
+            title="Code block">
+            ``` Code
+        </button>
+
+        <!-- Blockquote -->
+        <button
+            type="button"
+            onclick="window.insertBlockquote()"
+            class="px-3 py-1.5 text-xs font-medium text-gray-700 bg-gray-100 rounded hover:bg-gray-200 transition-colors"
+            title="Blockquote">
+            " Quote
+        </button>
+
+        <!-- Horizontal Rule -->
+        <button
+            type="button"
+            onclick="window.insertHorizontalRule()"
+            class="px-3 py-1.5 text-xs font-medium text-gray-700 bg-gray-100 rounded hover:bg-gray-200 transition-colors"
+            title="Horizontal rule">
+            ─ HR
+        </button>
+    </div>
+
+    <!-- Editor Textarea -->
+    <div class="flex-1 overflow-hidden">
+        <textarea
+            id="markdown-editor"
+            class="w-full h-full p-6 font-mono text-sm text-gray-900 bg-white resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset"
+            spellcheck="false"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            data-filepath="{{ filepath }}"
+            data-original-mtime="{{ mtime }}">{{ content }}</textarea>
+
+        <!-- Preview Container (hidden by default) -->
+        <div
+            id="preview-container"
+            class="hidden w-full h-full p-6 overflow-y-auto bg-white">
+            <article id="preview-content" class="prose prose-sm prose-slate max-w-none
+                prose-headings:text-gray-900
+                prose-h1:text-2xl prose-h1:font-bold prose-h1:mb-4 prose-h1:pb-2 prose-h1:border-b prose-h1:border-gray-200
+                prose-h2:text-xl prose-h2:font-semibold prose-h2:mt-8 prose-h2:mb-3
+                prose-h3:text-lg prose-h3:font-semibold prose-h3:mt-6 prose-h3:mb-2
+                prose-p:text-gray-700 prose-p:leading-relaxed
+                prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline
+                prose-code:text-pink-600 prose-code:bg-gray-100 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:font-mono prose-code:before:content-none prose-code:after:content-none
+                prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-pre:text-sm prose-pre:rounded-lg prose-pre:p-4
+                prose-ul:list-disc prose-ul:pl-6 prose-ul:my-4
+                prose-ol:list-decimal prose-ol:pl-6 prose-ol:my-4
+                prose-li:text-gray-700 prose-li:my-1
+                prose-blockquote:border-l-4 prose-blockquote:border-blue-500 prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-gray-600
+                prose-table:border-collapse prose-table:w-full prose-table:my-4
+                prose-th:bg-gray-100 prose-th:border prose-th:border-gray-300 prose-th:px-4 prose-th:py-2 prose-th:text-left prose-th:font-semibold prose-th:text-gray-900
+                prose-td:border prose-td:border-gray-300 prose-td:px-4 prose-td:py-2 prose-td:text-gray-700
+                prose-hr:border-gray-200 prose-hr:my-8
+                prose-strong:text-gray-900 prose-strong:font-semibold
+                prose-em:text-gray-700 prose-em:italic">
+                <!-- Rendered HTML will be inserted here -->
+            </article>
+        </div>
+    </div>
+
+    <!-- Status Bar -->
+    <div id="editor-status" class="px-4 py-2 border-t border-gray-200 bg-gray-50 text-xs text-gray-600">
+        <span id="status-text">Ready to edit</span>
+    </div>
+</div>
+
+<!-- Include editor JavaScript -->
+<script src="/static/js/editor.js"></script>
+<script src="/static/js/autosave.js"></script>
+<script src="/static/js/edit-modals.js"></script>
+<script src="/static/js/keyboard-shortcuts.js"></script>
+<script src="/static/js/toolbar-handlers.js"></script>
+
+<!-- Initialize editor on load -->
+<script>
+    // Start edit session when editor loads
+    document.addEventListener('DOMContentLoaded', function() {
+        const textarea = document.getElementById('markdown-editor');
+        const filepath = textarea.dataset.filepath;
+        const originalMtime = parseFloat(textarea.dataset.originalMtime);
+        const originalContent = textarea.value;
+
+        // Initialize edit session
+        if (window.startEditSession) {
+            window.startEditSession(filepath, originalContent, originalMtime);
+        }
+
+        // Initialize keyboard shortcuts
+        if (window.initKeyboardShortcuts) {
+            window.initKeyboardShortcuts();
+        }
+    });
+</script>

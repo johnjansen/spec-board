@@ -14,6 +14,13 @@ Then open http://localhost:8000 in your browser. That's it! No installation, no 
 
 - 🗂️ **3-Column Interface** - Clean Miller columns-style navigation: features → artifacts → content
 - 📝 **Rich Markdown Rendering** - Full support for tables, code blocks, syntax highlighting, and more
+- ✏️ **Inline Markdown Editor** - Edit spec files directly in the browser with:
+  - Live editing with auto-save every 30 seconds (crash recovery)
+  - Conflict detection for external file modifications
+  - Live preview toggle to see rendered markdown
+  - Keyboard shortcuts (Ctrl/Cmd+B bold, Ctrl/Cmd+I italic, Ctrl/Cmd+K link)
+  - Formatting toolbar with heading dropdown, lists, code blocks, and more
+  - Unsaved changes protection (warns before navigating away)
 - ✅ **Task Progress Tracking** - Visual progress bars and completion counters for task lists
 - 📊 **Kanban Board View** - Visualize tasks.md as a board with phase columns and task cards
 - 🎯 **Phase Indicators** - Automatic current/next phase highlighting for progress tracking
@@ -169,6 +176,61 @@ When viewing a `tasks.md` file, you can switch between **List View** and **Board
 - **Visual progress indicators** - See at a glance what's complete, in progress, and upcoming
 - **Multi-dimensional tracking** - Track feature lifecycle (spec→plan→tasks), phase progress, and individual task status
 - **Responsive design** - Adapts to desktop, tablet, and mobile screens
+
+### Inline Markdown Editor
+
+Edit your spec files directly in the browser without switching to an external editor!
+
+#### How to Edit
+
+1. Navigate to any markdown file (spec.md, plan.md, or tasks.md)
+2. Click the **✏️ Edit** button (amber button in the top-right)
+3. Make your changes in the textarea editor
+4. Click **Save** to persist changes or **Cancel** to discard
+
+#### Editor Features
+
+**Auto-Save & Crash Recovery**
+- Drafts are automatically saved to browser storage every 30 seconds
+- If your browser crashes, your unsaved work is recovered on next visit
+- "Resume draft?" prompt appears if a draft is found
+
+**Conflict Detection**
+- If the file is modified externally (e.g., in VS Code) while you're editing, a conflict modal appears
+- Choose "Reload" to discard your edits and load external changes
+- Choose "Keep Editing" to continue with your version (will overwrite on save)
+
+**Live Preview Toggle**
+- Click the **👁️ Preview** button to see rendered markdown
+- Toggle back to **✏️ Edit** mode to continue editing
+- Preview reflects unsaved changes instantly
+- Preview renders in <500ms for typical files
+
+**Keyboard Shortcuts**
+- `Ctrl/Cmd+B` - Wrap selection in **bold** (`**text**`)
+- `Ctrl/Cmd+I` - Wrap selection in *italic* (`*text*`)
+- `Ctrl/Cmd+K` - Insert link (`[text](url)`)
+
+**Formatting Toolbar**
+- **Heading ▾** - Dropdown to insert H1-H6 headings
+- **B** / **I** - Bold and italic formatting
+- **🔗 Link** / **</> Code** - Insert links and inline code
+- **• List** / **1. List** - Bullet and numbered lists
+- **``` Code** - Insert fenced code blocks
+- **" Quote** / **─ HR** - Blockquotes and horizontal rules
+
+**Safety Features**
+- Unsaved changes warning before navigating away (100% reliable)
+- Large file warning for files ≥5MB
+- UTF-8 encoding enforcement
+- Error modals with retry capability
+
+#### Editor Limitations
+
+- Maximum file size: 10MB
+- UTF-8 encoding only (non-UTF-8 files show error)
+- Single-user environment (no collaborative editing)
+- Manual save workflow (no auto-save to file)
 
 ### Navigation
 

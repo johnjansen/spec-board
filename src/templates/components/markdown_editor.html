@@ -192,9 +192,14 @@
 
 <!-- Initialize editor on load -->
 <script>
-    // Start edit session when editor loads
-    document.addEventListener('DOMContentLoaded', function() {
+    // Start edit session immediately (HTMX loads this dynamically, so DOMContentLoaded has already fired)
+    (function() {
         const textarea = document.getElementById('markdown-editor');
+        if (!textarea) {
+            console.error('Editor textarea not found');
+            return;
+        }
+
         const filepath = textarea.dataset.filepath;
         const originalMtime = parseFloat(textarea.dataset.originalMtime);
         const originalContent = textarea.value;
@@ -202,11 +207,15 @@
         // Initialize edit session
         if (window.startEditSession) {
             window.startEditSession(filepath, originalContent, originalMtime);
+        } else {
+            console.error('startEditSession function not found');
         }
 
         // Initialize keyboard shortcuts
         if (window.initKeyboardShortcuts) {
             window.initKeyboardShortcuts();
+        } else {
+            console.error('initKeyboardShortcuts function not found');
         }
-    });
+    })();
 </script>

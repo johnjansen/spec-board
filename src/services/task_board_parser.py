@@ -327,13 +327,21 @@ class TaskBoardParser:
         """Classify task as validation or implementation.
 
         Args:
-            task_description: Full task description text
+            task_description: Full task description text (may include task ID and markers)
 
         Returns:
             'validation' if task starts with "Manual validation:" (case-insensitive)
             'implementation' otherwise
         """
-        normalized = task_description.lower().strip()
+        # Remove task ID (TXXX pattern) and markers before classification
+        cleaned = re.sub(r'^\s*T\d{3,}\s+', '', task_description)
+
+        # Remove markers ([P], [US#])
+        cleaned = re.sub(r'\[P\]\s*', '', cleaned)
+        cleaned = re.sub(r'\[US\d+\]\s*', '', cleaned)
+
+        # Normalize and check
+        normalized = cleaned.lower().strip()
         if normalized.startswith("manual validation:"):
             return "validation"
         return "implementation"

@@ -65,6 +65,17 @@
                     📊 Board View
                 </button>
                 {% endif %}
+
+                <!-- Edit button (Feature 005-markdown-editor) - Show for all markdown files -->
+                <button
+                    id="btn-edit"
+                    class="px-3 py-1.5 text-xs font-medium rounded-md transition-colors duration-150 bg-amber-600 text-white hover:bg-amber-700"
+                    hx-get="/artifacts/{{ feature.full_name }}/{{ artifact_type }}/edit"
+                    hx-target="#column-content"
+                    hx-swap="innerHTML"
+                    title="Edit this file">
+                    ✏️ Edit
+                </button>
             </div>
             {% endif %}
         </div>

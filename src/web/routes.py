@@ -1,12 +1,15 @@
 """FastAPI routes for the Spec-Board dashboard."""
 
 from pathlib import Path
+from typing import Dict, Any
 
 from fastapi import Request, HTTPException
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, JSONResponse
+from pydantic import BaseModel
 
 from .app import app, templates
 from ..services.feature_repository import FeatureRepository
+from ..services.edit_service import EditService
 
 # Configure specs directory path
 # Look for specs/ in the current working directory where spec-board is run
@@ -14,6 +17,9 @@ SPECS_DIR = Path.cwd() / "specs"
 
 # Initialize repository
 feature_repo = FeatureRepository(SPECS_DIR)
+
+# Initialize edit service
+edit_service = EditService(SPECS_DIR)
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -304,5 +310,318 @@ async def view_board(feature_id: str, request: Request):
                 "error_message": f"Error loading board: {str(e)}",
                 "back_link": "/",
                 "back_text": "Return to Dashboard"
+            }
+        )
+
+
+# ============================================================================
+# Edit API Endpoints (Feature 005-markdown-editor)
+# ============================================================================
+
+
+class SaveFileRequest(BaseModel):
+    """Request model for POST /api/edit/save endpoint."""
+
+    filepath: str
+    content: str
+    originalMtime: float
+
+
+@app.get("/artifacts/{feature_id}/{artifact_type}/edit", response_class=HTMLResponse)
+async def edit_artifact(feature_id: str, artifact_type: str, request: Request):
+    """Load editor for artifact.
+
+    Args:
+        feature_id: Feature directory name
+        artifact_type: Artifact type (spec, plan, tasks)
+        request: FastAPI request object
+
+    Returns:
+        Editor HTML component
+    """
+    # Validate artifact_type
+    if artifact_type not in ["spec", "plan", "tasks"]:
+        return templates.TemplateResponse(
+            "components/column_content.html",
+            {
+                "request": request,
+                "error": f"Invalid artifact type: {artifact_type}",
+                "feature_id": feature_id,
+                "artifact_type": artifact_type
+            }
+        )
+
+    try:
+        # Get feature and artifact
+        feature = feature_repo.get_feature(feature_id)
+
+        if not feature:
+            return templates.TemplateResponse(
+                "components/column_content.html",
+                {
+                    "request": request,
+                    "error": f"Feature '{feature_id}' not found",
+                    "feature_id": feature_id,
+                    "artifact_type": artifact_type
+                }
+            )
+
+        artifact = feature.artifacts.get(artifact_type)
+
+        # Handle non-existent artifacts
+        if not artifact or not artifact.exists:
+            return templates.TemplateResponse(
+                "components/column_content.html",
+                {
+                    "request": request,
+                    "artifact_not_found": True,
+                    "feature_id": feature_id,
+                    "artifact_type": artifact_type
+                }
+            )
+
+        # Load file for editing
+        filepath = Path(artifact.filepath)
+        load_response = edit_service.load_for_editing(filepath)
+
+        if not load_response["success"]:
+            return templates.TemplateResponse(
+                "components/column_content.html",
+                {
+                    "request": request,
+                    "error": load_response.get("error", "Failed to load file"),
+                    "feature_id": feature_id,
+                    "artifact_type": artifact_type
+                }
+            )
+
+        # Check for large file warning
+        warning = load_response.get("warning")
+        if warning and "large_file" in warning:
+            # TODO: Implement large file warning modal (T042)
+            # For now, proceed with loading
+            pass
+
+        # Render editor
+        return templates.TemplateResponse(
+            "components/markdown_editor.html",
+            {
+                "request": request,
+                "filepath": load_response["filepath"],
+                "content": load_response["content"],
+                "mtime": load_response["mtime"],
+                "size_bytes": load_response["size_bytes"],
+                "feature": feature,
+                "feature_id": feature_id,
+                "artifact_type": artifact_type
+            }
+        )
+
+    except Exception as e:
+        return templates.TemplateResponse(
+            "components/column_content.html",
+            {
+                "request": request,
+                "error": f"Error loading editor: {str(e)}",
+                "feature_id": feature_id,
+                "artifact_type": artifact_type
+            }
+        )
+
+
+@app.get("/api/edit/load")
+async def load_file_for_editing(filepath: str) -> JSONResponse:
+    """Load markdown file for editing with metadata.
+
+    Args:
+        filepath: Absolute path to markdown file (query parameter)
+
+    Returns:
+        JSON response with:
+            - success: bool
+            - filepath: str (absolute path)
+            - content: str
+            - mtime: float
+            - size_bytes: int
+            - encoding: str
+            - warning: str (optional, if file is large)
+            - error: str (optional, if load failed)
+
+    Raises:
+        HTTPException: 400 (bad request), 403 (forbidden), 404 (not found)
+    """
+    if not filepath:
+        raise HTTPException(
+            status_code=400,
+            detail="Missing required parameter: filepath"
+        )
+
+    try:
+        file_path = Path(filepath)
+        response = edit_service.load_for_editing(file_path)
+
+        if not response["success"]:
+            # Determine error code from error message
+            error = response.get("error", "")
+            if "not found" in error.lower():
+                status_code = 404
+            elif "access denied" in error.lower():
+                status_code = 403
+            elif "not UTF-8" in error:
+                status_code = 400
+            elif "exceeds" in error:
+                status_code = 400
+            else:
+                status_code = 500
+
+            return JSONResponse(
+                status_code=status_code,
+                content=response
+            )
+
+        return JSONResponse(content=response)
+
+    except ValueError as e:
+        # Security validation failure (path outside specs/)
+        return JSONResponse(
+            status_code=403,
+            content={
+                "success": False,
+                "error": str(e)
+            }
+        )
+    except Exception as e:
+        return JSONResponse(
+            status_code=500,
+            content={
+                "success": False,
+                "error": f"Failed to load file: {str(e)}"
+            }
+        )
+
+
+@app.post("/api/edit/preview")
+async def preview_markdown(request: Request) -> JSONResponse:
+    """Render markdown content to HTML for preview.
+
+    Args:
+        request: FastAPI request with JSON body containing 'content' field
+
+    Returns:
+        JSON response with:
+            - success: bool
+            - html: str (rendered HTML)
+            - error: str (optional, if render failed)
+    """
+    try:
+        # Parse request body
+        body = await request.json()
+        content = body.get('content', '')
+
+        if not content:
+            return JSONResponse(
+                content={
+                    "success": True,
+                    "html": "<p class='text-gray-500'>No content to preview</p>"
+                }
+            )
+
+        # Render markdown to HTML
+        from ..services.markdown_renderer import MarkdownRenderer
+        renderer = MarkdownRenderer()
+
+        # Create a temporary artifact-like object for rendering
+        class PreviewArtifact:
+            def __init__(self, content):
+                self.content_raw = content
+
+        preview_artifact = PreviewArtifact(content)
+        html_content = renderer.render(preview_artifact)
+
+        return JSONResponse(
+            content={
+                "success": True,
+                "html": html_content
+            }
+        )
+
+    except Exception as e:
+        return JSONResponse(
+            status_code=500,
+            content={
+                "success": False,
+                "error": f"Failed to render preview: {str(e)}"
+            }
+        )
+
+
+@app.post("/api/edit/save")
+async def save_file_from_editor(request_data: SaveFileRequest) -> JSONResponse:
+    """Save edited markdown content with conflict detection.
+
+    Args:
+        request_data: SaveFileRequest with filepath, content, originalMtime
+
+    Returns:
+        JSON response with:
+            - success: bool
+            - mtime: float (new mtime after save)
+            - size_bytes: int (new size after save)
+            - conflict: bool (optional, if conflict detected)
+            - error: str (optional, if save failed)
+
+    Raises:
+        HTTPException: 400 (validation), 403 (forbidden), 409 (conflict), 500 (server error)
+    """
+    try:
+        file_path = Path(request_data.filepath)
+        response = edit_service.save_from_editor(
+            filepath=file_path,
+            content=request_data.content,
+            original_mtime=request_data.originalMtime
+        )
+
+        if not response["success"]:
+            # Handle conflict (409)
+            if response.get("conflict"):
+                return JSONResponse(
+                    status_code=409,
+                    content=response
+                )
+
+            # Determine error code from error message
+            error = response.get("error", "")
+            if "not found" in error.lower():
+                status_code = 404
+            elif "access denied" in error.lower():
+                status_code = 403
+            elif "UTF-8" in error:
+                status_code = 400
+            else:
+                status_code = 500
+
+            return JSONResponse(
+                status_code=status_code,
+                content=response
+            )
+
+        return JSONResponse(content=response)
+
+    except ValueError as e:
+        # Security validation failure (path outside specs/)
+        return JSONResponse(
+            status_code=403,
+            content={
+                "success": False,
+                "error": str(e)
+            }
+        )
+    except Exception as e:
+        return JSONResponse(
+            status_code=500,
+            content={
+                "success": False,
+                "error": f"Failed to save file: {str(e)}",
+                "retryable": True
             }
         )

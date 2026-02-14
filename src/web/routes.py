@@ -381,7 +381,7 @@ async def edit_artifact(feature_id: str, artifact_type: str, request: Request):
             )
 
         # Load file for editing
-        filepath = Path(artifact.filepath)
+        filepath = Path(artifact.path)
         load_response = edit_service.load_for_editing(filepath)
 
         if not load_response["success"]:

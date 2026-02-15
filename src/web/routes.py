@@ -1,5 +1,6 @@
 """FastAPI routes for the Spec-Board dashboard."""
 
+import os
 from pathlib import Path
 from typing import Dict, Any
 
@@ -12,8 +13,12 @@ from ..services.feature_repository import FeatureRepository
 from ..services.edit_service import EditService
 
 # Configure specs directory path
-# Look for specs/ in the current working directory where spec-board is run
-SPECS_DIR = Path.cwd() / "specs"
+# Read from SPECS_DIR environment variable, or fall back to current working directory
+specs_dir_env = os.environ.get('SPECS_DIR')
+if specs_dir_env:
+    SPECS_DIR = Path(specs_dir_env)
+else:
+    SPECS_DIR = Path.cwd() / "specs"
 
 # Initialize repository
 feature_repo = FeatureRepository(SPECS_DIR)
@@ -31,6 +36,22 @@ async def dashboard(request: Request):
     """
     return templates.TemplateResponse(
         "dashboard.html",
+        {"request": request}
+    )
+
+
+@app.get("/welcome", response_class=HTMLResponse)
+async def welcome(request: Request):
+    """Welcome screen for first launch (T026).
+
+    Displayed when no previous project exists. Shows instructions and
+    "Open Folder" button that triggers electronAPI.openFolderDialog().
+
+    Returns:
+        Welcome screen HTML template
+    """
+    return templates.TemplateResponse(
+        "welcome.html",
         {"request": request}
     )
 

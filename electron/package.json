@@ -1,0 +1,62 @@
+{
+  "name": "spec-board-desktop",
+  "version": "0.1.0",
+  "description": "Desktop application for spec-board - Electron wrapper around existing web dashboard",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --enable-logging",
+    "build": "electron-builder --dir",
+    "build:mac": "electron-builder --mac",
+    "build:win": "electron-builder --win",
+    "build:linux": "electron-builder --linux"
+  },
+  "keywords": [
+    "spec-board",
+    "electron",
+    "desktop",
+    "spec-kit"
+  ],
+  "author": "spec-board contributors",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^28.1.0",
+    "electron-builder": "^24.9.1"
+  },
+  "dependencies": {
+    "chokidar": "^3.5.3",
+    "electron-log": "^5.0.1",
+    "electron-store": "^8.1.0",
+    "get-port": "^5.1.1"
+  },
+  "build": {
+    "appId": "com.specboard.desktop",
+    "productName": "spec-board",
+    "directories": {
+      "buildResources": "assets",
+      "output": "dist"
+    },
+    "files": [
+      "**/*",
+      "!node_modules/**/*",
+      "node_modules/electron-store/**/*",
+      "node_modules/electron-log/**/*",
+      "node_modules/chokidar/**/*",
+      "node_modules/get-port/**/*"
+    ],
+    "mac": {
+      "target": "dir",
+      "category": "public.app-category.developer-tools",
+      "icon": "assets/icon.png"
+    },
+    "win": {
+      "target": "dir",
+      "icon": "assets/icon.png"
+    },
+    "linux": {
+      "target": "dir",
+      "category": "Development",
+      "icon": "assets/icon.png"
+    }
+  }
+}

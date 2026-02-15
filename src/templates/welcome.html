@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome - spec-board</title>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 h-screen flex items-center justify-center">
+    <div class="max-w-2xl mx-auto p-8">
+        <!-- Welcome Card -->
+        <div class="bg-white rounded-lg shadow-lg p-8">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-bold text-gray-900 mb-2">Welcome to spec-board</h1>
+                <p class="text-gray-600 text-lg">Desktop application for viewing and managing spec-kit artifacts</p>
+            </div>
+
+            <!-- Getting Started Section -->
+            <div class="mb-8">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Getting Started</h2>
+                <p class="text-gray-700 mb-4">
+                    To begin, open a <span class="font-mono bg-gray-100 px-2 py-1 rounded">specs/</span> directory from your spec-kit project.
+                </p>
+                <p class="text-gray-600 text-sm mb-4">
+                    The directory should contain numbered feature folders like <span class="font-mono text-xs">001-feature-name/</span>,
+                    each with spec.md, plan.md, and/or tasks.md files.
+                </p>
+            </div>
+
+            <!-- Open Folder Button -->
+            <div class="text-center">
+                <button
+                    id="openFolderBtn"
+                    onclick="openFolder()"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg shadow-md transition-colors duration-200 text-lg">
+                    📁 Open Folder
+                </button>
+                <p class="text-gray-500 text-sm mt-3">Or use File → Open Folder from the menu</p>
+            </div>
+
+            <!-- Features List -->
+            <div class="mt-12 pt-8 border-t border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">What you can do:</h3>
+                <ul class="space-y-3 text-gray-700">
+                    <li class="flex items-start">
+                        <span class="text-blue-600 mr-2">✓</span>
+                        <span>Browse feature specifications, implementation plans, and task breakdowns</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-blue-600 mr-2">✓</span>
+                        <span>View rich markdown rendering with syntax highlighting</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-blue-600 mr-2">✓</span>
+                        <span>Edit spec files inline with live preview</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-blue-600 mr-2">✓</span>
+                        <span>Visualize tasks in Kanban board view</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-blue-600 mr-2">✓</span>
+                        <span>Track progress with completion indicators</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center mt-6 text-gray-500 text-sm">
+            <p>Built with ❤️ using spec-kit and Claude Code</p>
+        </div>
+    </div>
+
+    <script>
+        // T027: Open folder dialog via Electron IPC
+        async function openFolder() {
+            try {
+                const btn = document.getElementById('openFolderBtn');
+                btn.disabled = true;
+                btn.textContent = 'Opening...';
+
+                // Call Electron IPC to show folder picker
+                const result = await window.electronAPI.openFolderDialog();
+
+                if (result.success) {
+                    // Folder selected successfully - reload to show project
+                    console.log('Folder selected:', result.path);
+                    window.location.href = '/';
+                } else {
+                    // Error or cancelled
+                    btn.disabled = false;
+                    btn.textContent = '📁 Open Folder';
+
+                    if (result.error) {
+                        alert('Error: ' + result.error);
+                    }
+                }
+            } catch (error) {
+                console.error('Failed to open folder:', error);
+                alert('Failed to open folder dialog. Please try again.');
+
+                const btn = document.getElementById('openFolderBtn');
+                btn.disabled = false;
+                btn.textContent = '📁 Open Folder';
+            }
+        }
+
+        // Also listen for keyboard shortcut (Cmd/Ctrl+O)
+        document.addEventListener('keydown', (e) => {
+            if ((e.metaKey || e.ctrlKey) && e.key === 'o') {
+                e.preventDefault();
+                openFolder();
+            }
+        });
+    </script>
+</body>
+</html>
